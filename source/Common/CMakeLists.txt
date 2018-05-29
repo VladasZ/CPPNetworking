@@ -5,6 +5,7 @@ project(Common)
 set(CMAKE_CXX_STANDARD 17)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
+include(../../build/Include.cmake)
 include_directories(${PROJECT_SOURCE_DIR})
 
 conan_basic_setup()
