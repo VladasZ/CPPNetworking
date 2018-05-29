@@ -2,7 +2,7 @@
 #include "Config.h"
 
 using namespace std;
-using namespace Rest;
+using namespace Net;
 
 string Config::base_url;
 Headers Config::default_headers;

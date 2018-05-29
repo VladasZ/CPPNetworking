@@ -2,7 +2,7 @@
 #include "FileResponse.h"
 
 using namespace std;
-using namespace Rest;
+using namespace Net;
 
 static string content_disposition_header = "Content-Disposition";
 

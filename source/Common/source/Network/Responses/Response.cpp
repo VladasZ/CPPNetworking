@@ -2,7 +2,7 @@
 #include "Response.h"
 
 using namespace std;
-using namespace Rest;
+using namespace Net;
 
 static const bool print_headers = false;
 

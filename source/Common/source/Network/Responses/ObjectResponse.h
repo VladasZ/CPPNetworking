@@ -4,7 +4,7 @@
 
 #include "Response.h"
 
-namespace Rest
+namespace Net
 {
 	template<class T>
 	class ObjectResponse : public Response

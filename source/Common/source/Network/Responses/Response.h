@@ -8,7 +8,7 @@
 #include "HTTP.h"
 #include "Mappable.h"
 
-namespace Rest
+namespace Net
 {
 	class Response
 	{
@@ -35,4 +35,4 @@ namespace Rest
 	};
 }
 
-std::ostream& operator<<(std::ostream& os, const Rest::Response& obj);
+std::ostream& operator<<(std::ostream& os, const Net::Response& obj);

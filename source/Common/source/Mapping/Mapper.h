@@ -12,7 +12,7 @@
 
 #include "Mappable.h"
 
-namespace Rest
+namespace Net
 {
     template<class T> class Mappable;
 

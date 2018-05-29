@@ -5,7 +5,7 @@
 
 #include "FileResponse.h"
 
-namespace Rest
+namespace Net
 {
 	struct Downloader
 	{

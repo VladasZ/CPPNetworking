@@ -9,7 +9,7 @@
 #include "Downloader.h"
 #include "Uploader.h"
 
-namespace Rest
+namespace Net
 {
 	struct Network
 	{

@@ -7,19 +7,19 @@
 
 #include "Response.h"
 
-namespace Rest
+namespace Net
 {
 	struct Network;
     struct Uploader;
     struct Downloader;
-	template<class T> class Mapper;
+	template<class T> struct Mapper;
 
-	class Core final
-	{
+	class Core final {
+
 		friend Network;
         friend Uploader;
         friend Downloader;
-		template<class T> friend class Mapper;
+		template<class T> friend struct Mapper;
 
         using Completion = std::function<void(const Response&)>;
 

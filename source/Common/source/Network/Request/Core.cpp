@@ -19,28 +19,26 @@
 #include "Core.h"
 #include "Config.h"
 
+using namespace Net;
 using namespace Poco;
 using namespace Poco::Net;
 using namespace std;
-using namespace Rest;
+
 using Poco::URIStreamOpener;
 
 using RequestSetup = function<void(HTTPClientSession& session, HTTPRequest& request)>;
 
-static bool is_https(const string& url)
-{
+static bool is_https(const string& url) {
 	return url.substr(0, 5) == "https";
 }
 
-static string append_url(const string& url)
-{
+static string append_url(const string& url) {
    return Config::has_base_url() ?
           Config::base_url + "/" + url :
           url;
 }
 
-Core& Core::get_instance()
-{
+Core& Core::get_instance() {
 	static Core instance;
 	return instance;
 }
@@ -50,14 +48,13 @@ void _request(
     const string& url, 
     const HTTP::Method& method, 
     const Core::Completion& completion,
-    const RequestSetup& setup_request
-) 
-{
+    const RequestSetup& setup_request) {
+
 	Response response;
     response.request_url = url;
 
-	try
-	{
+	try {
+
 		const URI uri(url);
 
 		SessionType session(uri.getHost(), uri.getPort());
@@ -85,22 +82,18 @@ void _request(
 		if (response.error == "OK")
 			response.error = "";
 	}
-	catch (const Exception& exception)
-	{
+	catch (const Exception& exception) {
 		response.error = exception.displayText();
 	}
 
 	completion(response);
 }
 
-void Core::http_request(const string& url, const HTTP::Method& method, const string& body, Completion completion) const
-{
+void Core::http_request(const string& url, const HTTP::Method& method, const string& body, Completion completion) const {
     const auto full_url = append_url(url);
 
-    const auto request_setup = [body](HTTPClientSession& session, HTTPRequest& request)
-    {
-        if (body.length() > 0)
-        {
+    const auto request_setup = [body](HTTPClientSession& session, HTTPRequest& request) {
+        if (body.length() > 0) {
             request.setMethod(HTTP::POST);
             request.setContentLength(body.length());
             ostream& os = session.sendRequest(request);
@@ -116,12 +109,10 @@ void Core::http_request(const string& url, const HTTP::Method& method, const str
 		_request<HTTPClientSession>(full_url, method, completion, request_setup);
 }
 
-void Core::upload_request(const std::string& url, Poco::Net::HTMLForm& form, Completion completion) const 
-{
+void Core::upload_request(const std::string& url, Poco::Net::HTMLForm& form, Completion completion) const  {
     const auto full_url = append_url(url);
 
-    const auto request_setup = [&](HTTPClientSession& session, HTTPRequest& request)
-    {
+    const auto request_setup = [&](HTTPClientSession& session, HTTPRequest& request) {
         form.prepareSubmit(request);
         form.write(session.sendRequest(request));
     };
@@ -132,8 +123,7 @@ void Core::upload_request(const std::string& url, Poco::Net::HTMLForm& form, Com
         _request<HTTPClientSession>(full_url, HTTP::POST, completion, request_setup);
 }
 
-Core::Core()
-{
+Core::Core() {
 	Poco::Net::initializeSSL();
 
 	SharedPtr<InvalidCertificateHandler> ptrCert = new ConsoleCertificateHandler(false);
@@ -142,7 +132,6 @@ Core::Core()
 	SSLManager::instance().initializeClient(0, ptrCert, ptrContext);
 }
 
-Core::~Core()
-{
+Core::~Core() {
 	Poco::Net::uninitializeSSL();
 }

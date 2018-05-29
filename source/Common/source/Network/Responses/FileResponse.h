@@ -2,7 +2,7 @@
 
 #include "Response.h"
 
-namespace Rest
+namespace Net
 {
 	class FileResponse : public Response
 	{

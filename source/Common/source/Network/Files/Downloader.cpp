@@ -6,7 +6,7 @@
 #include "Downloader.h"
 #include "Core.h"
 
-using namespace Rest;
+using namespace Net;
 using namespace std;
 using namespace Poco;
 

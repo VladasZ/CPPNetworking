@@ -4,7 +4,7 @@
 
 #include "HTTP.h"
 
-namespace Rest
+namespace Net
 {
 	struct Config
 	{

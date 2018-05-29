@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <map>
 
-namespace Rest
+namespace Net
 {
     using Headers = std::unordered_map<std::string, std::string>;
     using Parameters = std::map<std::string, std::string>;

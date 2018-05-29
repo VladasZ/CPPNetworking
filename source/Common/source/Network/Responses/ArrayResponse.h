@@ -6,7 +6,7 @@
 
 #include "Response.h"
 
-namespace Rest
+namespace Net
 {
 	template<class T>
 	class ArrayResponse : public Response

@@ -9,7 +9,7 @@
 #include "Core.h"
 #include "Mappable.h"
 
-namespace Rest
+namespace Net
 {
 	struct Uploader
 	{
