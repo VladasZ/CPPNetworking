@@ -5,11 +5,13 @@ project(Server)
 set(CMAKE_CXX_STANDARD 17)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
+include(../../build/Include.cmake)
 include_directories(${PROJECT_SOURCE_DIR})
 
 conan_basic_setup()
 
 add_catalog_recursive(${PROJECT_SOURCE_DIR} / SOURCE)
+add_catalog_recursive(${PROJECT_SOURCE_DIR}/../Common/source /Common SOURCE)
 add_executable(${PROJECT_NAME} ${SOURCE})
 
 foreach(debug_lib ${CONAN_LIBS_DEBUG})

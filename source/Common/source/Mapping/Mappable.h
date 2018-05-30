@@ -63,12 +63,12 @@ namespace Net {
 			return array;
 		}
 
-        virtual std::string to_string() const = 0;
+        virtual std::string toString() { return toJson().toString(); }
 
     protected:
         Mappable() = default;
         Mappable(const JSON& json) { }
-        virtual JSON to_json() const { return JSON(JSONStruct()); }
+        virtual JSON toJson() const { return JSON(JSONStruct()); }
         virtual void to_form(Poco::Net::HTMLForm& form) const { }
     private:
         static const std::string get_all_url;
@@ -80,5 +80,5 @@ namespace Net {
 template<class T>
 std::ostream& operator<<(std::ostream& os, const Net::Mappable<T>& obj)
 {
-    return os << obj.to_string();
+    return os << obj.toString();
 }

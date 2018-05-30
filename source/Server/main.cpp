@@ -1,10 +1,76 @@
-
+#include <Poco/Net/ServerSocket.h>
+#include <Poco/Net/HTTPServer.h>
+#include <Poco/Net/HTTPRequestHandler.h>
+#include <Poco/Net/HTTPRequestHandlerFactory.h>
+#include <Poco/Net/HTTPResponse.h>
+#include <Poco/Net/HTTPServerRequest.h>
+#include <Poco/Net/HTTPServerResponse.h>
+#include <Poco/Util/ServerApplication.h>
 #include <iostream>
-#include <memory>
+#include <string>
+#include <vector>
 
+#include "Dog.h"
+
+
+using namespace Poco::Net;
+using namespace Poco::Util;
 using namespace std;
 
-int main() {
+class MyRequestHandler : public HTTPRequestHandler
+{
+public:
+    virtual void handleRequest(HTTPServerRequest &req, HTTPServerResponse &resp)
+    {
+        resp.setStatus(HTTPResponse::HTTP_BAD_GATEWAY);
+        resp.setContentType("application/json");
 
-    return 0;
+        ostream& out = resp.send();
+        out << Dog().toString();
+
+        out.flush();
+
+        cout << endl
+            << "Response sent for count=" << count
+            << " and URI=" << req.getURI() << endl;
+    }
+
+private:
+    static int count;
+};
+
+int MyRequestHandler::count = 0;
+
+class MyRequestHandlerFactory : public HTTPRequestHandlerFactory
+{
+public:
+    virtual HTTPRequestHandler* createRequestHandler(const HTTPServerRequest &)
+    {
+        return new MyRequestHandler;
+    }
+};
+
+class MyServerApp : public ServerApplication
+{
+protected:
+    int main(const vector<string> &)
+    {
+        HTTPServer s(new MyRequestHandlerFactory, ServerSocket(9090), new HTTPServerParams);
+
+        s.start();
+        cout << endl << "Server started" << endl;
+
+        waitForTerminationRequest();  // wait for CTRL-C or kill
+
+        cout << endl << "Shutting down..." << endl;
+        s.stop();
+
+        return Application::EXIT_OK;
+    }
+};
+
+int main(int argc, char** argv)
+{
+    MyServerApp app;
+    return app.run(argc, argv);
 }
