@@ -1,5 +1,5 @@
 [requires]
-boost/1.70.0@conan/stable
+Poco/1.9.0@pocoproject/stable
 
 [generators]
 cmake
