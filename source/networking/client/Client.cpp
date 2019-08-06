@@ -23,39 +23,47 @@ using namespace std;
 #include "Log.hpp"
 #include "Client.hpp"
 
-using namespace cu;
 using namespace net;
 
-Client::Client(const cu::Path& base_url) : base_url(base_url) {
+Client::Client(const cu::Path& base_url) : _base_url(base_url) {
     
 }
 
-void Client::request(const cu::Path& path, Completion completion) {
+void Client::request(const cu::Path& path, CoreCompletion completion) {
     request(path, Method::GET, completion);
 }
 
-void Client::request(const cu::Path& p, Method method, Completion completion) {
-    URI uri(base_url + "/" + p);
+void Client::request(const URL& path, Method method, CoreCompletion completion) {
+    
+    URL url = _base_url / path;
+    URI uri(url);
+    
     HTTPClientSession session(uri.getHost(), uri.getPort());
     
-    // prepare path
-    std::string path(uri.getPathAndQuery());
-    if (path.empty())
-        path = "/";
+    HTTPRequest request(method_to_string[method],
+                        uri.getPathAndQuery(),
+                        HTTPMessage::HTTP_1_1);
     
-    // send request
-    HTTPRequest req(HTTPRequest::HTTP_GET, path, HTTPMessage::HTTP_1_1);
-    session.sendRequest(req);
+    session.sendRequest(request);
     
-    // get response
-    HTTPResponse res;
-    cout << res.getStatus() << " " << res.getReason() << endl;
+    HTTPResponse response;
+
+    istream &stream = session.receiveResponse(response);
     
-    // print response
-    istream &is = session.receiveResponse(res);
+    string content { istreambuf_iterator<char>(stream),
+                     istreambuf_iterator<char>()       };
     
-    std::string content{ std::istreambuf_iterator<char>(is),
-        std::istreambuf_iterator<char>() };
+    auto status = response.getReason();
+    auto code   = response.getStatus();
     
-    Info(content);
+    cout << "rglica" << endl;
+    cout << code << " " << status << endl;
+    cout << "rglica2" << endl;
+
+    
+    completion(Response("",
+                        status,
+                        code,
+                        content,
+                        Request(url, method)));
 }

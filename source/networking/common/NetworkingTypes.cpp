@@ -10,12 +10,12 @@
 
 using namespace net;
 
-const std::unordered_map<Method, std::string> method_to_string = {
+std::unordered_map<Method, std::string> net::method_to_string = {
     { Method::GET,  "GET"  },
     { Method::POST, "POST" }
 };
 
-std::unordered_map<std::string, Method> string_to_method = {
+std::unordered_map<std::string, Method> net::string_to_method = {
     { "GET",  Method::GET  },
     { "POST", Method::POST }
 };

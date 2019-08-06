@@ -8,8 +8,8 @@ Client client("http://staging.actorspocketguide.com/apg-api");
 
 int main() {
     
-    client.request("userAuth", [](Error error) {
-        Info(error);
+    client.request("userAuth", [](Response response) {
+        Info(response.to_string());
     });
     
     return 0;

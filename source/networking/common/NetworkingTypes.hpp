@@ -11,19 +11,24 @@
 #include <string>
 #include <unordered_map>
 
+#include "Path.hpp"
+
 namespace net {
-
-    using Error = std::string;
+    
+    using URL        = cu::Path;
+    using Body       = std::string;
+    using Error      = std::string;
+    using Status     = std::string;
+    using StatusCode = unsigned;
+    
     using Headers = std::unordered_map<std::string, std::string>;
-
-    using Completion = std::function<void(Error)>;
 
     enum class Method {
         GET,
         POST
     };
 
-    extern const std::unordered_map<Method, std::string> method_to_string;
-    extern const std::unordered_map<std::string, Method> string_to_method;
+    extern std::unordered_map<Method, std::string> method_to_string;
+    extern std::unordered_map<std::string, Method> string_to_method;
 
 }

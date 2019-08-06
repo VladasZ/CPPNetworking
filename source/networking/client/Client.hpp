@@ -12,21 +12,23 @@
 #include <unordered_map>
 
 #include "Path.hpp"
+#include "Response.hpp"
 #include "NetworkingTypes.hpp"
 
 namespace net {
     
     class Client {
         
+        cu::Path _base_url;
+        
     public:
         
-        cu::Path base_url;
         Headers headers;
         
         Client(const cu::Path& base_url);
 
-        void request(const cu::Path&, Completion);
-        void request(const cu::Path&, Method, Completion);
+        void request(const URL&, CoreCompletion);
+        void request(const URL&, Method, CoreCompletion);
         
     };
 }
