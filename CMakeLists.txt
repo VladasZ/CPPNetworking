@@ -11,7 +11,8 @@ project(networking)
 conan_basic_setup()
 
 add_subdirectory(source/networking)
-add_subdirectory(source/networking_test)
+add_subdirectory(source/client_test)
+add_subdirectory(source/server_test)
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
   foreach(var ${GIT_DEPENDENCIES})

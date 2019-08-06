@@ -4,7 +4,7 @@
 
 using namespace net;
 
-Client client("http://staging.actorspocketguide.com/apg-api");
+Client client("127.0.0.1");
 
 int main() {
     

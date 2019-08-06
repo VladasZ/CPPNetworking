@@ -22,6 +22,7 @@ using namespace std;
 
 #include "Log.hpp"
 #include "Client.hpp"
+#include "ExceptionCatch.hpp"
 
 using namespace net;
 
@@ -36,34 +37,40 @@ void Client::request(const cu::Path& path, CoreCompletion completion) {
 void Client::request(const URL& path, Method method, CoreCompletion completion) {
     
     URL url = _base_url / path;
-    URI uri(url);
     
-    HTTPClientSession session(uri.getHost(), uri.getPort());
+    Request request_info(url, method);
     
-    HTTPRequest request(method_to_string[method],
-                        uri.getPathAndQuery(),
-                        HTTPMessage::HTTP_1_1);
-    
-    session.sendRequest(request);
-    
-    HTTPResponse response;
-
-    istream &stream = session.receiveResponse(response);
-    
-    string content { istreambuf_iterator<char>(stream),
-                     istreambuf_iterator<char>()       };
-    
-    auto status = response.getReason();
-    auto code   = response.getStatus();
-    
-    cout << "rglica" << endl;
-    cout << code << " " << status << endl;
-    cout << "rglica2" << endl;
-
-    
-    completion(Response("",
-                        status,
-                        code,
-                        content,
-                        Request(url, method)));
+    try {
+        URI uri(url);
+        
+        HTTPClientSession session(uri.getHost(), uri.getPort());
+        
+        HTTPRequest request(method_to_string[method],
+                            uri.getPathAndQuery(),
+                            HTTPMessage::HTTP_1_1);
+        
+        session.sendRequest(request);
+        
+        HTTPResponse response;
+        
+        istream &stream = session.receiveResponse(response);
+        
+        string content { istreambuf_iterator<char>(stream),
+            istreambuf_iterator<char>()       };
+        
+        auto status = response.getReason();
+        auto code   = response.getStatus();
+        
+        cout << "rglica" << endl;
+        cout << code << " " << status << endl;
+        cout << "rglica2" << endl;
+        
+        completion(Response("",
+                            status,
+                            code,
+                            content,
+                            request_info));
+    } catch (...) {
+        completion(Response(what(), request_info));
+    }
 }

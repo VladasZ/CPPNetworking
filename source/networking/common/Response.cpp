@@ -11,6 +11,10 @@
 using namespace net;
 using namespace std;
 
+Response::Response(const Error& error, const Request& request)
+: Response(error, "", 0, "", request)
+{ }
+
 Response::Response(const Error& error,
                    const Status& status,
                    StatusCode status_code,

@@ -24,6 +24,7 @@ namespace net {
         
         const Request request;
         
+        Response(const Error&, const Request&);
         Response(const Error&, const Status&, StatusCode, const Body&, const Request&);
         
         std::string to_string() const;

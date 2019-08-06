@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 
-project(networking_test)
+project(server_test)
 
 add_catalog_recursive(${PROJECT_SOURCE_DIR} / SOURCE)
 
