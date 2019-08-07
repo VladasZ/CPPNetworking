@@ -4,7 +4,7 @@
 
 using namespace net;
 
-Client client("127.0.0.1");
+Client client("http://localhost/");
 
 int main() {
     
