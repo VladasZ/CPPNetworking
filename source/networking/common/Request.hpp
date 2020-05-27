@@ -11,16 +11,20 @@
 #include "Path.hpp"
 #include "NetworkingTypes.hpp"
 
+
 namespace net {
     
     class Request {
+
+        URL _url;
+        Method _method;
         
     public:
         
-        const URL url;
-        const Method method;
-        
         Request(const URL&, Method);
+
+        const URL& url() const;
+        Method method() const;
         
         std::string to_string() const;
     };

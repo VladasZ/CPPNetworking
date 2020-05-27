@@ -22,6 +22,8 @@ namespace net {
         cu::Path _base_url;
         
     public:
+
+        bool async = false;
         
         Headers headers;
         
@@ -29,6 +31,11 @@ namespace net {
 
         void request(const URL&, CoreCompletion);
         void request(const URL&, Method, CoreCompletion);
-        
+
+    private:
+
+        void _dispatch(const URL&, Method, CoreCompletion);
+        void _request(const URL&, Method, CoreCompletion);
+
     };
 }

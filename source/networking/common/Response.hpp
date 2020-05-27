@@ -14,20 +14,28 @@
 namespace net {
     
     class Response {
-        
+
+        Error _error;
+        Status _status;
+        StatusCode _status_code;
+
+        Body _body;
+
+        Request _request;
+
     public:
-        
-        const Error error;
-        const Status status;
-        const StatusCode status_code;
-        
-        const Body body;
-        
-        const Request request;
         
         Response(const Error&, const Request&);
         Response(const Error&, const Status&, StatusCode, const Body&, const Request&);
-        
+
+        const Error& error() const;
+        const Status& status() const;
+        const StatusCode& status_code() const;
+
+        const Body& body() const;
+
+        const Request& request() const;
+
         std::string to_string() const;
     };
     
