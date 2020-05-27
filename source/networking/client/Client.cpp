@@ -25,20 +25,20 @@ using namespace Poco;
 using namespace Poco::Net;
 
 
-Client::Client(const cu::Path& base_url) : _base_url(base_url) {
+Client::Client(const cu::Path& base_url, bool async) : _base_url(base_url), async(async) {
 
 }
 
-void Client::request(const cu::Path& path, CoreCompletion completion) {
+void Client::request(const cu::Path& path, CoreCompletion completion) const {
     _dispatch(path, Method::GET, completion);
 }
 
-void Client::request(const URL& path, Method method, CoreCompletion completion) {
+void Client::request(const URL& path, Method method, CoreCompletion completion) const {
     _dispatch(path, method, completion);
 }
 
 
-void Client::_dispatch(const URL& path, Method method, CoreCompletion completion) {
+void Client::_dispatch(const URL& path, Method method, CoreCompletion completion) const {
     if (async) {
         Dispatch::async([=] {
             _request(path, method, completion);
@@ -49,7 +49,7 @@ void Client::_dispatch(const URL& path, Method method, CoreCompletion completion
     }
 }
 
-void Client::_request(const URL& path, Method method, CoreCompletion completion) {
+void Client::_request(const URL& path, Method method, CoreCompletion completion) const {
 
     URL url = _base_url / path;
 
@@ -77,8 +77,7 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
         auto code   = response.getStatus();
 
         auto finish = [=] {
-            completion(Response("",
-                                status,
+            completion(Response(status,
                                 code,
                                 content,
                                 request_info));
@@ -91,12 +90,13 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
             finish();
         }
 
-    } catch (...) {
+    } 
+    catch (...) {
         if (async) {
-            Dispatch::on_main([=] { completion(Response(what(), request_info)); });
+            Dispatch::on_main([=] { completion(Response(request_info, what())); });
         }
         else {
-            completion(Response(what(), request_info));
+            completion(Response(request_info, what()));
         }
     }
 }

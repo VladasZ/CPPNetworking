@@ -17,7 +17,6 @@ namespace net {
     
     class Response {
 
-        Error _error;
         Status _status;
         StatusCode _status_code;
 
@@ -25,10 +24,12 @@ namespace net {
 
         Request _request;
 
+        Error _error;
+
     public:
         
-        Response(const Error&, const Request&);
-        Response(const Error&, const Status&, StatusCode, const Body&, const Request&);
+        Response(const Request&, const Error& = no_error);
+        Response(const Status&, StatusCode, const Body&, const Request&, const Error& = no_error);
 
         const Error& error() const;
         const Status& status() const;
@@ -40,7 +41,7 @@ namespace net {
 
         std::string to_string() const;
     };
-    
-    using CoreCompletion = std::function<void(const Response&)>;
+  
+    using CoreCompletion = std::function<void(Response)>;
 
 }

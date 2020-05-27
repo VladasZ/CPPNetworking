@@ -26,6 +26,6 @@ Method Request::method() const {
 
 string Request::to_string() const {
     return string() +
-    "URL: " + _url.to_string() + "\n"
+    "URL: " + std::string(_url) + "\n"
     "Method:" + method_to_string[_method];
 }

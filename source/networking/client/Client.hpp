@@ -27,15 +27,15 @@ namespace net {
         
         Headers headers;
         
-        Client(const cu::Path& base_url);
+        Client(const cu::Path& base_url, bool async = false);
 
-        void request(const URL&, CoreCompletion);
-        void request(const URL&, Method, CoreCompletion);
+        void request(const URL&, CoreCompletion) const;
+        void request(const URL&, Method, CoreCompletion) const;
 
     private:
 
-        void _dispatch(const URL&, Method, CoreCompletion);
-        void _request(const URL&, Method, CoreCompletion);
+        void _dispatch(const URL&, Method, CoreCompletion) const;
+        void _request(const URL&, Method, CoreCompletion) const;
 
     };
 }

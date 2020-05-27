@@ -6,27 +6,28 @@
 //  Copyright © 2019 VladasZ. All rights reserved.
 //
 
+#include "Log.hpp"
 #include "Response.hpp"
 
 using namespace std;
 using namespace net;
 
 
-Response::Response(const Error& error, const Request& request)
-: Response(error, "", 0, "", request)
+Response::Response(const Request& request, const Error& error)
+: Response("", 0, "", request, error)
 { }
 
-Response::Response(const Error& error,
-                   const Status& status,
+Response::Response(const Status& status,
                    StatusCode status_code,
                    const Body& body,
-                   const Request& request)
+                   const Request& request,
+                   const Error& error)
 :
-_error(error),
 _status(status),
 _status_code(status_code),
 _body(body),
-_request(request)
+_request(request),
+_error(error)
 { }
 
 const Error& Response::error() const {
@@ -51,7 +52,7 @@ const Request& Response::request() const {
 
 string Response::to_string() const {
     return string() +
-    "Error: " + _error + "\n" +
+    "Error: " + cu::Log::to_string(_error) + "\n" +
     "Status: " + _status + "\n" +
     "Status code: " + ::to_string(_status_code) + "\n" +
     "Body: " + _body + "\n" +
