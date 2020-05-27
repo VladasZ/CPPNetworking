@@ -70,6 +70,7 @@ void Client::request(const URL& path, Method method, CoreCompletion completion) 
                             code,
                             content,
                             request_info));
+
     } catch (...) {
         completion(Response(what(), request_info));
     }

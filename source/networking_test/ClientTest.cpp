@@ -4,13 +4,12 @@
 
 using namespace net;
 
-Client client("http://localhost/");
+Client client("http://ip.jsontest.com");
 
-int main() {
-    
+void client_test() {
+
     client.request("userAuth", [](Response response) {
-        Info(response.to_string());
+        Log(response.to_string());
     });
-    
-    return 0;
+
 }

@@ -10,6 +10,7 @@
 
 using namespace net;
 
+
 std::unordered_map<Method, std::string> net::method_to_string = {
     { Method::GET,  "GET"  },
     { Method::POST, "POST" }

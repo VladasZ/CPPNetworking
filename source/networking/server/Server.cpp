@@ -11,12 +11,13 @@
 using namespace net;
 using namespace std;
 
+
 Request::Request(const URL& url, Method method) : url(url), method(method) {
     
 }
 
 string Request::to_string() const {
     return string() +
-    "URL: " + url + "\n"
+    "URL: " + url.to_string() + "\n"
     "Method:" + method_to_string[method];
 }

@@ -325,3 +325,7 @@ xcuserdata/
 
 # Cocoapods
 Pods/
+
+conanfile.txt
+*cmake-build*
+.DS_*

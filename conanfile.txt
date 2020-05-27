@@ -1,5 +1,14 @@
+# GENERATED FILE. DO NOT EDIT
+# Edit conan.txt instead
+
 [requires]
-Poco/1.9.0@pocoproject/stable
+libiconv/1.16
+poco/1.10.0
 
 [generators]
 cmake
+
+[options]
+poco:enable_data_sqlite=False
+poco:enable_mongodb=False
+
