@@ -60,11 +60,7 @@ void Client::request(const URL& path, Method method, CoreCompletion completion) 
         
         auto status = response.getReason();
         auto code   = response.getStatus();
-        
-        cout << "rglica" << endl;
-        cout << code << " " << status << endl;
-        cout << "rglica2" << endl;
-        
+
         completion(Response("",
                             status,
                             code,
