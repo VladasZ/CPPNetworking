@@ -9,6 +9,7 @@
 #include <thread>
 #include <Poco/URI.h>
 #include <Poco/Path.h>
+#include <Poco/Exception.h>
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPClientSession.h>
@@ -55,6 +56,8 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
 
     Request request_info(url, method);
 
+    Dispatch::Task finish;
+
     try {
         URI uri(url);
 
@@ -83,15 +86,14 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
                                 request_info));
         };
 
-        if (async) {
-            Dispatch::on_main(finish);
-        }
-        else {
-            finish();
-        }
+    }
+    catch (Poco::Exception ex) {
 
-    } 
-    catch (...) {
+        Logvar(ex.message());
+     //   Logvar(ex.displayText());
+        Logvar(ex.className());
+
+
         if (async) {
             Dispatch::on_main([=] { completion(Response(request_info, what())); });
         }
@@ -99,4 +101,12 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
             completion(Response(request_info, what()));
         }
     }
+
+    if (async) {
+        Dispatch::on_main(finish);
+    }
+    else {
+        finish();
+    }
+
 }

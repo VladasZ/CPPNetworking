@@ -28,7 +28,11 @@ _status_code(status_code),
 _body(body),
 _request(request),
 _error(error)
-{ }
+{
+    if (status_code > 299 && !error.has_value()) {
+        _error = std::to_string(status_code);
+    }
+}
 
 const Error& Response::error() const {
     return _error;
