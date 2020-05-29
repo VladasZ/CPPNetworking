@@ -84,29 +84,24 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
                                 code,
                                 content,
                                 request_info));
+
         };
 
+        if (async) {
+            Dispatch::on_main(finish);
+        }
+        else {
+            finish();
+        }
+
     }
-    catch (Poco::Exception ex) {
-
-        Logvar(ex.message());
-     //   Logvar(ex.displayText());
-        Logvar(ex.className());
-
-
+    catch (...) {
         if (async) {
             Dispatch::on_main([=] { completion(Response(request_info, what())); });
         }
         else {
             completion(Response(request_info, what()));
         }
-    }
-
-    if (async) {
-        Dispatch::on_main(finish);
-    }
-    else {
-        finish();
     }
 
 }
