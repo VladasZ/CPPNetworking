@@ -24,14 +24,13 @@ namespace net {
 
         Request _request;
 
-        Error _error;
-
     public:
-        
+
+        Error error;
+
         Response(const Request&, const Error& = no_error);
         Response(const Status&, StatusCode, const Body&, const Request&, const Error& = no_error);
 
-        const Error& error() const;
         const Status& status() const;
         const StatusCode& status_code() const;
 

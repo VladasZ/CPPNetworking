@@ -27,15 +27,11 @@ _status(status),
 _status_code(status_code),
 _body(body),
 _request(request),
-_error(error)
+error(error)
 {
     if (status_code > 299 && !error.has_value()) {
-        _error = std::to_string(status_code);
+        this->error = std::to_string(status_code);
     }
-}
-
-const Error& Response::error() const {
-    return _error;
 }
 
 const Status& Response::status() const {
@@ -56,7 +52,7 @@ const Request& Response::request() const {
 
 string Response::to_string() const {
     return string() +
-    "Error: " + cu::Log::to_string(_error) + "\n" +
+    "Error: " + cu::Log::to_string(error) + "\n" +
     "Status: " + _status + "\n" +
     "Status code: " + ::to_string(_status_code) + "\n" +
     "Body: " + _body + "\n" +

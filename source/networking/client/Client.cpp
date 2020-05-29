@@ -53,12 +53,10 @@ void Client::_dispatch(const URL& path, Method method, CoreCompletion completion
 void Client::_request(const URL& path, Method method, CoreCompletion completion) const {
 
     URL url = _base_url / path;
-
     Request request_info(url, method);
 
-    Dispatch::Task finish;
-
     try {
+
         URI uri(url);
 
         HTTPClientSession session(uri.getHost(), uri.getPort());
@@ -69,23 +67,22 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
 
         session.sendRequest(request);
 
-        HTTPResponse response;
+        HTTPResponse http_response;
 
-        istream &stream = session.receiveResponse(response);
+        istream &stream = session.receiveResponse(http_response);
 
         string content { istreambuf_iterator<char>(stream),
                          istreambuf_iterator<char>()       };
 
-        auto status = response.getReason();
-        auto code   = response.getStatus();
+        auto status = http_response.getReason();
+        auto code   = http_response.getStatus();
 
-        auto finish = [=] {
-            completion(Response(status,
-                                code,
-                                content,
-                                request_info));
+        auto response = Response(status,
+                                 code,
+                                 content,
+                                 request_info);
 
-        };
+        auto finish = bind(completion, response);
 
         if (async) {
             Dispatch::on_main(finish);
@@ -96,11 +93,13 @@ void Client::_request(const URL& path, Method method, CoreCompletion completion)
 
     }
     catch (...) {
+        auto finish = bind(completion, Response(request_info, what()));
+
         if (async) {
-            Dispatch::on_main([=] { completion(Response(request_info, what())); });
+            Dispatch::on_main(finish);
         }
         else {
-            completion(Response(request_info, what()));
+            finish();
         }
     }
 

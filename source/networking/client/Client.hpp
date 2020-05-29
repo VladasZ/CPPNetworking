@@ -27,7 +27,7 @@ namespace net {
         
         Headers headers;
         
-        Client(const cu::Path& base_url, bool async = false);
+        explicit Client(const cu::Path& base_url, bool async = false);
 
         void request(const URL&, CoreCompletion) const;
         void request(const URL&, Method, CoreCompletion) const;
