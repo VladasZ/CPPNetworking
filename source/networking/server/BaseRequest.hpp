@@ -144,7 +144,7 @@ private:
         try {
 
             json = mapping::JSON::parse(body);
-            Log(json.dump());
+            Log << json.dump();
 
             for (auto key : required_json_keys()) {
                 if (!json.contains(key)) {

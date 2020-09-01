@@ -1,3 +1,3 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 
-setup_exe(networking)
+setup_exe(networking_test)

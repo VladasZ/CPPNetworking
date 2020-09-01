@@ -52,7 +52,7 @@ const Request& Response::request() const {
 
 string Response::to_string() const {
     return string() +
-    "Error: " + cu::Log::to_string(error) + "\n" +
+    "Error: " + cu::log::to_string(error) + "\n" +
     "Status: " + _status + "\n" +
     "Status code: " + ::to_string(_status_code) + "\n" +
     "Body: " + _body + "\n" +
