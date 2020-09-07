@@ -71,15 +71,15 @@ public:
 protected:
 
     void respond_error(const std::string& error) {
-        //_response->send() << json_mapper.to_json_string(Error(error));
+        _response->send() << json_mapper.to_json_string(Error(error));
     }
 
     void respond_error(const Error& error) {
-        //_response->send() << json_mapper.to_json_string(error);
+        _response->send() << json_mapper.to_json_string(error);
     }
 
 	void respond_error(const std::string& error, const std::string& message) {
-        //_response->send() << json_mapper.to_json_string(Error(error, message));
+        _response->send() << json_mapper.to_json_string(Error(error, message));
 	}
 
     virtual std::string name() const = 0;
