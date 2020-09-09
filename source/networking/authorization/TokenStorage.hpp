@@ -28,7 +28,7 @@ public:
                 return id;
             }
 		}
-        return cu::Result<mapping::ID>();
+        return cu::Result<size_t>();
     }
 
     static bool is_valid(const T&object, const Token& token) {
