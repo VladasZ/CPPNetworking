@@ -53,7 +53,7 @@ public:
 			}
 			catch (...) {
 				response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_NOT_ACCEPTABLE);
-				respond_error(Error::failed_to_parse_json(CU_LOG_WITH_LOCATION(what())));
+				respond_error(Error::failed_to_parse_json(CU_LOG_WITH_LOCATION(cu::what())));
 				return;
 			}
         }
@@ -62,7 +62,7 @@ public:
 			handle();
 		}
 		catch (...) {
-			respond_error("Request handler error", CU_LOG_WITH_LOCATION(what()));
+			respond_error("Request handler error", CU_LOG_WITH_LOCATION(cu::what()));
 		}
     }
 
@@ -157,7 +157,7 @@ private:
         }
         catch(...) {
 			response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_NOT_ACCEPTABLE);
-            respond_error(Error::failed_to_parse_json(what()));
+            respond_error(Error::failed_to_parse_json(cu::what()));
             return true;
         }
 
