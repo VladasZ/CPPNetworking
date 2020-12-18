@@ -54,7 +54,7 @@ public:
 			catch (...) {
 				response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_NOT_ACCEPTABLE);
                 Log << cu::what();
-				respond_error(Error::failed_to_parse_json(cu::what()));
+				respond_error("Failed to parse JSON: " + cu::what());
 				return;
 			}
         }
@@ -64,7 +64,7 @@ public:
 		}
 		catch (...) {
             Log << cu::what();
-			respond_error("Request handler error", cu::what());
+			respond_error("Request handler error: " + cu::what());
 		}
     }
 
@@ -75,14 +75,6 @@ protected:
     void respond_error(const std::string& error) {
         _response->send() << json_mapper.to_json_string(Error(error));
     }
-
-    void respond_error(const Error& error) {
-        _response->send() << json_mapper.to_json_string(error);
-    }
-
-	void respond_error(const std::string& error, const std::string& message) {
-        _response->send() << json_mapper.to_json_string(Error(error, message));
-	}
 
     virtual std::string name() const = 0;
 
@@ -134,7 +126,7 @@ private:
         for (auto key : required_header_keys()) {
             if (request_headers.find(key) == request_headers.end()) {
                 response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_NOT_ACCEPTABLE);
-                respond_error("Request validation error", name() + " must contain " + key + " header field");
+                respond_error("Request validation error: " + name() + " must contain " + key + " header field");
                 return true;
             }
         }
@@ -151,7 +143,7 @@ private:
             for (auto key : required_json_keys()) {
                 if (!json.contains(key)) {
                     response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_NOT_ACCEPTABLE);
-                    respond_error("Model validation error", name() + " must contain " + key + " JSON field");
+                    respond_error("Model validation error: " +  name() + " must contain " + key + " JSON field");
                     return true;
                 }
             }
@@ -159,7 +151,7 @@ private:
         }
         catch(...) {
 			response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_NOT_ACCEPTABLE);
-            respond_error(Error::failed_to_parse_json(cu::what()));
+            respond_error(Error("Failed to parse JSON: " + cu::what()));
             return true;
         }
 
