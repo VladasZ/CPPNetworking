@@ -7,7 +7,6 @@
 #include <Poco/Net/HTTPServerResponse.h>
 
 #include "Log.hpp"
-#include "Error.hpp"
 #include "JsonMapper.hpp"
 #include "ExceptionCatch.hpp"
 
@@ -73,7 +72,7 @@ public:
 protected:
 
     void respond_error(const std::string& error) {
-        _response->send() << json_mapper.to_json_string(Error(error));
+        _response->send() << mapping::JSON {{ "error" , error }};
     }
 
     virtual std::string name() const = 0;
@@ -151,7 +150,7 @@ private:
         }
         catch(...) {
 			response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_NOT_ACCEPTABLE);
-            respond_error(Error("Failed to parse JSON: " + cu::what()));
+            respond_error("Failed to parse JSON: " + cu::what());
             return true;
         }
 
